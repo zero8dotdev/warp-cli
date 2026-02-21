@@ -50,12 +50,32 @@ check_prerequisites() {
 
     # Check for Cloudflare WARP app
     if [ ! -d "/Applications/Cloudflare WARP.app" ]; then
-        echo -e "${RED}✗ Cloudflare WARP app not found${NC}"
+        echo -e "${YELLOW}⚠ Cloudflare WARP app not found${NC}"
         echo ""
-        echo "Please install Cloudflare WARP from the App Store first:"
+        echo "You need to install Cloudflare WARP first:"
         echo "  https://apps.apple.com/app/cloudflare-warp/id1423210915"
         echo ""
-        exit 1
+        echo "Would you like to open the App Store now? (y/n)"
+
+        if [ -t 0 ]; then
+            read -p "  " -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                echo "Opening App Store..."
+                open "macappstore://apps.apple.com/app/cloudflare-warp/id1423210915"
+                echo ""
+                echo "After installing Cloudflare WARP, run this command again:"
+                echo "  curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash"
+                exit 0
+            fi
+        fi
+
+        echo "Please install Cloudflare WARP from:"
+        echo "  https://apps.apple.com/app/cloudflare-warp/id1423210915"
+        echo ""
+        echo "Then run this command again:"
+        echo "  curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash"
+        exit 0
     fi
     echo "✓ Cloudflare WARP app found"
 

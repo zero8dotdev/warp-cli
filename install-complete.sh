@@ -66,12 +66,28 @@ step_extract() {
     print_step "2" "Extracting Cloudflare Binaries"
 
     if [ ! -d "$WARP_APP_PATH" ]; then
-        echo -e "${RED}✗ Error: Cloudflare WARP app not found${NC}"
+        echo -e "${YELLOW}⚠ Cloudflare WARP app not found${NC}"
         echo ""
-        echo "Please install Cloudflare WARP from the App Store first:"
+        echo "You need to install Cloudflare WARP first."
+        echo ""
+        echo "Would you like to open the App Store now? (y/n)"
+        read -p "  " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            echo "Opening App Store..."
+            open "macappstore://apps.apple.com/app/cloudflare-warp/id1423210915"
+            echo ""
+            echo "After installing Cloudflare WARP, run this command again:"
+            echo "  ./install-complete.sh"
+            exit 0
+        fi
+
+        echo "Please install Cloudflare WARP from:"
         echo "  https://apps.apple.com/app/cloudflare-warp/id1423210915"
         echo ""
-        exit 1
+        echo "Then run this command again:"
+        echo "  ./install-complete.sh"
+        exit 0
     fi
 
     if [ ! -x "$SCRIPTS_DIR/extract-warp.sh" ]; then
