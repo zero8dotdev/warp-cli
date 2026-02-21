@@ -1,513 +1,148 @@
-# Cloudflare WARP CLI
+# warp-cli
 
-> **Make Cloudflare WARP actually usable from the terminal.**
+> **Simple, fast VPN access from your terminal.**
 
-A beautiful, user-friendly command-line interface for Cloudflare WARP. Control your VPN connection with simple, intuitive commands instead of remembering 20+ confusing warp-cli arguments.
-
-```bash
-$ warp up
-✓ Connected to WARP
-
-$ warp status
-Status: Connected to WARP
-
-$ warp exclude add example.com
-✓ Added 'example.com' to split tunnel
-```
-
----
-
-## ⚠️ Learning Project Notice
-
-**This is an educational/learning project.** It demonstrates:
-- Building a CLI wrapper in Rust
-- Command-line UX design
-- System integration on macOS
-- Smart installation automation
-
-Use at your own discretion. This is not an official Cloudflare tool.
-
----
-
-## Why You Need This
-
-### The Problem with Raw `warp-cli`
-
-```bash
-# Raw warp-cli - confusing and verbose
-$ warp-cli connect
-$ warp-cli disconnect
-$ warp-cli tunnel host add example.com
-$ warp-cli tunnel host list
-$ warp-cli settings list
-```
-
-### Our Solution
-
-```bash
-# Our warp CLI - simple and intuitive
-$ warp up
-$ warp down
-$ warp exclude add example.com
-$ warp exclude list
-$ warp settings
-```
-
----
-
-## ✨ What We Add
-
-| Feature | warp-cli | Our CLI |
-|---------|----------|---------|
-| **Simple commands** | ❌ | ✅ |
-| **Colored output** | ❌ | ✅ |
-| **JSON mode** | ❌ | ✅ |
-| **Pretty errors** | ❌ | ✅ |
-| **Help text** | ❌ | ✅ |
-| **Intuitive interface** | ❌ | ✅ |
-| **Quiet mode** | ❌ | ✅ |
-| **Connection toggle** | ❌ | ✅ |
-
----
-
-## 🚀 Quick Start
-
-### Installation Options
-
-#### Option 1: Homebrew (Easiest)
-
-```bash
-brew tap zero8dotdev/tools
-brew install warp-cli
-```
-
-Update anytime with:
-```bash
-brew upgrade warp-cli
-```
-
-#### Option 2: One-Line Install
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash
-```
-
-The script will:
-- Auto-detect if Cloudflare WARP is installed
-- Offer to install via Homebrew if needed
-- Build and install the CLI
-- Verify everything works
-
-#### Option 3: Clone and Build
-
-```bash
-git clone https://github.com/zero8dotdev/warp-cli.git
-cd warp-cli
-./install-complete.sh
-```
-
-### Then Use Immediately
+Control Cloudflare WARP with intuitive commands instead of wrestling with menus.
 
 ```bash
 warp up              # Connect to WARP
 warp down            # Disconnect
-warp status          # Check status
-warp exclude add X   # Add domain to split tunnel
-warp --help          # See all commands
+warp status          # Check your status
 ```
 
 ---
 
-## 📚 All Available Commands
+## What is WARP?
 
+Cloudflare WARP is a free VPN service that:
+- **Encrypts your internet traffic** - Your ISP can't see what you're doing
+- **Hides your location** - Websites see Cloudflare's IP, not yours
+- **Blocks malware & trackers** - Cloudflare's network filters out bad stuff
+- **Makes browsing faster** - Cloudflare optimizes your connection
+
+[Learn more about WARP →](https://www.cloudflare.com/warp/)
+
+---
+
+## Why Use This CLI?
+
+The official WARP app is designed for people who click menus. If you live in the terminal, this is better:
+
+| Need | Official App | warp-cli |
+|------|--------------|----------|
+| **Quick toggle** | Click menu bar | `warp up` |
+| **Check connection** | Open app | `warp status` |
+| **Scripts & automation** | ❌ Not possible | ✅ Works great |
+| **Low resource usage** | High (GUI overhead) | Low |
+| **Works on servers** | ❌ No GUI | ✅ Works everywhere |
+
+---
+
+## 30-Second Setup
+
+### 1. Install WARP First
 ```bash
-status              # Show connection status
-up                  # Connect to WARP
-down                # Disconnect from WARP
-toggle              # Toggle connection state
-
-mode warp           # Set WARP mode (warp, gateway, doh, warp+warp)
-logs                # Follow daemon logs
-stats               # Show connection statistics
-settings            # View/manage settings
-
-exclude list        # List excluded domains/IPs
-exclude add DOMAIN  # Add domain to split tunnel
-exclude remove X    # Remove from split tunnel
-
-daemon status       # Check daemon health
-daemon restart      # Restart daemon
-
-update check        # Check for updates
-diagnose            # Run diagnostics
+# Download from App Store (free)
+https://apps.apple.com/app/cloudflare-warp/id1423210915
 ```
 
----
-
-## 💡 Real-World Examples
-
-### Check Connection in Scripts
-```bash
-if warp status --json | jq -e '.connected' > /dev/null; then
-  echo "Connected to WARP"
-fi
-```
-
-### Setup Split Tunnel
-```bash
-warp exclude add 192.168.1.0/24    # Local network
-warp exclude add example.com        # Specific domain
-warp exclude list                   # View all exclusions
-```
-
-### Monitor Connection
-```bash
-warp stats          # Shows 40+ connection metrics
-```
-
-### Quiet Mode for Scripts
-```bash
-warp up --quiet     # No output, just exit code
-```
-
----
-
-## 🎯 Why This is Better
-
-### 1. **User-Friendly Interface**
-Compare these:
-- Raw: `warp-cli tunnel host add example.com`
-- Ours: `warp exclude add example.com`
-
-### 2. **Beautiful Output**
-```bash
-$ warp up
-✓ Connected to WARP
-```
-vs confusing raw output
-
-### 3. **Scriptable**
-```bash
-warp status --json | jq .connected  # Easy scripting
-```
-
-### 4. **No GUI Bloat**
-Pure CLI - no menu bar app needed. Just the daemon + CLI.
-
-### 5. **Works Everywhere**
-Single static Rust binary. No dependencies. Works on all Macs.
-
----
-
-## 📋 Requirements
-
-- **macOS 10.15+** (Catalina or newer)
-- **Cloudflare WARP** app from [App Store](https://apps.apple.com/app/cloudflare-warp/id1423210915)
-- **Rust** (for building) - `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-
----
-
-## 📖 Documentation
-
-- **[QUICKSTART.md](QUICKSTART.md)** - Get running in 5 minutes
-- **[DETAILS.md](DETAILS.md)** - Technical architecture & deep dive
-- **[INSTALLATION.md](INSTALLATION.md)** - Troubleshooting & installation methods
-- **[USAGE_EXAMPLES.md](USAGE_EXAMPLES.md)** - 100+ real-world command examples
-
----
-
-## 🛠️ How It Works
-
-```
-Your Terminal
-    ↓
-  warp CLI (our wrapper)
-    ↓
-warp-cli binary (communicates via gRPC)
-    ↓
-CloudflareWARP daemon (running as root via launchd)
-    ↓
-/var/run/warp_service (Unix socket)
-```
-
-We translate simple commands into warp-cli calls, add pretty colors, and handle all the complexity.
-
----
-
-## 💎 Key Features
-
-✅ **12 simple commands**
-   Easy to remember and use - no need to memorize obscure flags
-
-✅ **Colored output**
-   Green for success, red for errors, yellow for warnings
-
-✅ **JSON mode**
-   `--json` flag for scripting and automation pipelines
-
-✅ **Quiet mode**
-   Minimal output for automation and CI/CD integration
-
-✅ **Split tunnel**
-   Manage excluded domains/IPs easily with intuitive commands
-
-✅ **Connection stats**
-   40+ metrics about your connection quality and performance
-
-✅ **Zero dependencies**
-   Single static Rust binary, no external dependencies
-
-✅ **Works offline**
-   No internet needed after installation, purely local operation
-
----
-
-## 📚 What We Learned
-
-This project demonstrates several key concepts in systems programming and Rust:
-
-### **1. Reverse Engineering the WARP Architecture**
-- Discovered that Cloudflare WARP runs as a daemon (`CloudflareWARP` binary)
-- Found IPC communication via Unix domain socket at `/var/run/warp_service`
-- Identified that `warp-cli` uses gRPC protocol to communicate with daemon
-- Located all critical binaries inside the `.app` bundle structure
-- Understood launchd daemon configuration and lifecycle
-
-### **2. Extracting and Repackaging Binaries**
-- Learned to extract binaries from macOS `.app` bundles
-- Understood how launchd configuration (plist) works
-- Discovered how to safely extract and install system binaries
-- Implemented smart detection to check system state before installation
-
-### **3. Building a CLI Wrapper in Rust**
-- Used `clap` crate for powerful argument parsing with derive macros
-- Implemented subcommand hierarchy and global flags
-- Built output formatting with `colored` crate
-- Handled errors gracefully with `anyhow`
-- JSON serialization with `serde_json`
-
-### **4. System Integration on macOS**
-- Understood macOS launchd daemon management
-- Worked with plist file formats and launchctl
-- Handled sudo elevation and permissions
-- Learned about Unix domain socket communication
-- Discovered log file locations and system diagnostics
-
-### **5. UX/CLI Design Principles**
-- Simplified command interface (8 words vs 20+ flags)
-- Consistent command naming patterns
-- Progressive disclosure (help text for each command)
-- Appropriate error messaging
-- Output formatting for human readability
-
-### **6. Smart Installation Automation**
-- Created detection scripts to check system readiness
-- Implemented multi-step installation with proper sequencing
-- Built non-interactive installation for curl | bash execution
-- Added verification at each step
-- Handled both interactive and non-interactive modes
-
-### **7. Go-to-Market Thinking**
-- Documentation as a key product differentiator
-- Multiple entry points for different user types (5-min quickstart vs detailed docs)
-- Clear value proposition compared to alternatives
-- Transparent about limitations and project status
-
----
-
-## 🔄 Installation Methods
-
-### Method 1: Homebrew (Recommended)
+### 2. Install warp-cli
 ```bash
 brew tap zero8dotdev/tools
 brew install warp-cli
 ```
 
-**Advantages:**
-- ✅ One-command installation
-- ✅ Easy updates with `brew upgrade`
-- ✅ System-wide integration
-- ✅ No need for Xcode or Rust
-
-**Updates:**
+### 3. Done!
 ```bash
-brew upgrade warp
-```
-
-### Method 2: One-Liner (No Homebrew)
-```bash
-curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash
-```
-
-Automatically:
-- Detects if WARP is installed
-- Offers Homebrew or App Store installation
-- Builds from source
-- Sets everything up
-
-### Method 3: Clone & Install
-```bash
-git clone https://github.com/zero8dotdev/warp-cli.git
-cd warp-cli
-./install-complete.sh
-```
-
-### Method 4: Manual Build
-```bash
-git clone https://github.com/zero8dotdev/warp-cli.git
-cd warp-cli
-cargo build --release
-sudo install -m 755 target/release/warp /usr/local/bin/warp
+warp up          # Start using WARP
+warp status      # Verify connection
 ```
 
 ---
 
-## 📦 Homebrew Publishing
-
-This project uses automated Homebrew publishing. Here's how it works:
-
-### Release Process
-
-When we create a new release (e.g., `v0.2.0`):
-
-1. **Tag Release**: `git tag v0.2.0`
-2. **Create Release**: Push tag and create release on GitHub
-3. **Automation Happens**:
-   - GitHub Actions triggers automatically
-   - Downloads release tarball
-   - Calculates SHA256 hash
-   - Updates formula in `homebrew-warp` tap
-   - Formula gets committed automatically
-4. **Users Update**: `brew upgrade warp`
-
-### For Maintainers
-
-See [HOMEBREW_SETUP.md](HOMEBREW_SETUP.md) for:
-- How to set up the Homebrew tap
-- GitHub Actions workflow details
-- Personal access token setup
-- Creating your first release
-
-### Architecture
-
-```
-warp-cli repository (main code)
-          ↓
-GitHub Actions workflow
-          ↓
-homebrew-tools repository (tap)
-          ↓
-Users: brew install warp-cli
-```
-
-## 🤔 Why This CLI?
-
-The standard Cloudflare WARP package is a GUI-first application designed for non-technical users. It lives in your menu bar and is always trying to be helpful with notifications and status updates.
-
-**However**, if you live in the terminal and use WARP for development (accessing internal networks, testing with different geolocations, etc.), the GUI is overkill:
+## Common Commands
 
 ```bash
-# Without our CLI - juggling mouse and terminal, forgetting obscure commands:
-$ warp-cli tunnel host add example.com
-$ warp-cli tunnel host list
-$ warp-cli settings list
-$ warp-cli connect
+# Connection control
+warp up                    # Connect to WARP
+warp down                  # Disconnect
+warp toggle                # Switch on/off
+warp status                # Check connection status
 
-# With our CLI - simple, memorable commands:
-$ warp exclude add example.com
-$ warp exclude list
-$ warp settings
-$ warp up
+# Split tunnel (exclude sites from VPN)
+warp exclude add example.com      # Don't route through WARP
+warp exclude list                 # See all exclusions
+warp exclude remove example.com   # Remove from list
+
+# Info & troubleshooting
+warp stats                 # Show connection quality
+warp logs                  # View recent activity
+warp diagnose              # Run health check
 ```
 
-This CLI gives you **full WARP power** from your terminal without the GUI friction.
+See all commands: `warp --help`
 
 ---
 
-## ❌ Why not just use the Cloudflare WARP app?
+## Need More?
 
-The WARP GUI app works great for some use cases, but has significant downsides for developers:
+**New to WARP?**
+- [QUICKSTART.md](QUICKSTART.md) - Get running in 5 minutes
+- [What is WARP & Why Use It?](https://www.cloudflare.com/warp/)
 
-### The Problem with the GUI App
+**Want technical details?**
+- [DETAILS.md](DETAILS.md) - How it works under the hood
+- [INSTALLATION.md](INSTALLATION.md) - Troubleshooting & install methods
+- [PROJECT_STORY.md](PROJECT_STORY.md) - Why this was built
 
-| Issue | Impact |
-|-------|--------|
-| **Always-on menu bar** | Takes up screen real estate, constant presence |
-| **High battery/CPU usage** | GUI constantly refreshes status, drains battery |
-| **No CLI integration** | Can't script it, can't use in automation pipelines |
-| **No JSON output** | Hard to parse status in scripts |
-| **Verbose underlying CLI** | The `warp-cli` binary exists but is confusing |
-| **Designed for non-developers** | Settings buried in menus, no power-user features |
+**Want real-world examples?**
+- [USAGE_EXAMPLES.md](USAGE_EXAMPLES.md) - 100+ command examples for scripts & automation
 
-### Our CLI Advantage
-
-```bash
-# Check connection in scripts - impossible with GUI
-if warp status --json | jq -e '.connected' > /dev/null; then
-  echo "Connected"
-fi
-
-# Manage split tunnel without opening GUI
-warp exclude add internal.corp.com
-warp exclude list
-
-# Automate in CI/CD pipelines
-warp up --quiet && run_tests && warp down
-```
+**For developers:**
+- [Homebrew setup guide](HOMEBREW_SETUP.md) - Publishing other tools
 
 ---
 
-## ✅ Do I Miss Anything?
+## FAQs
 
-**Short answer: No, you don't.**
+**Q: Do I need to install the WARP app first?**
+A: Yes, the app sets up the VPN daemon that this CLI controls. Think of it as: app = engine, CLI = dashboard.
 
-The WARP daemon (`CloudflareWARP`) still does all the heavy lifting. Our CLI is just a friendlier control interface:
+**Q: Will this work on my Mac?**
+A: Yes, all Macs with Homebrew (Intel or Apple Silicon).
 
-### How It Actually Works
+**Q: Is it safe?**
+A: Yes. Cloudflare is a major company. This CLI is just a friendlier way to control their VPN.
 
-1. **The daemon is still there** - `CloudflareWARP` runs as root via launchd (system startup)
-2. **All WARP features work** - DNS-over-HTTPS, VPN tunneling, split tunnel, everything
-3. **Our CLI just controls it** - We send commands via gRPC to the daemon
-4. **Cloudflare still pushes updates** - The official WARP app (if installed) updates the daemon, or you can update via Homebrew
-5. **You get the best of both** - Daemon handles VPN features, our CLI provides a dev-friendly interface
+**Q: Can I use this on Linux/Windows?**
+A: Not yet. It's macOS-only because WARP daemon integration is macOS-specific.
 
-### What You Get
+**Q: Do I pay anything?**
+A: No, WARP is free (with optional paid plans for advanced features).
 
-✅ Full WARP connectivity (same as the GUI app)
-✅ All split tunnel features
-✅ All connection statistics
-✅ All DNS/gateway settings
-✅ No menu bar bloat
-✅ Terminal-first workflow
-✅ Scriptable interface
-✅ JSON output for automation
-
-So keep the daemon running (launchd handles it automatically), ignore the GUI app, and use our CLI for everything. You lose nothing and gain everything.
-
----
-
-## ❓ FAQ
-
-**Q: Why not just use the WARP GUI?**
-A: The GUI is bloated, slow, and uses lots of battery. Our CLI is lightweight and perfect for developers.
-
-**Q: Is this official?**
-A: No, this is a community learning project. Use at your own risk.
-
-**Q: Does it work on Intel/Apple Silicon?**
-A: Yes, it's a universal Rust binary that works on both.
+**Q: How much data do I use?**
+A: WARP doesn't count against your ISP's data cap—you're encrypting existing traffic, not adding to it.
 
 **Q: Can I script this?**
-A: Yes! Use `--json` mode and parse with `jq` for full automation.
-
-**Q: How do I install without Homebrew?**
-A: Use the one-liner: `curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash`
-
-**Q: How do I update from the one-liner?**
-A: Re-run the same command. Or better yet, switch to Homebrew: `brew tap zero8dotdev/tools && brew install warp-cli`
+A: Yes! Use `warp status --json` to get structured output for scripts.
 
 ---
 
-## 📝 License
+## Status
 
-Educational project. Not affiliated with Cloudflare. Use the Cloudflare WARP app according to their terms.
+✅ **Production ready** for daily use
+🎓 **Learning project** - demonstrates CLI design, Rust, and macOS integration
+📦 **Open source** - MIT licensed
+
+Not affiliated with Cloudflare. Use WARP according to their [terms of service](https://www.cloudflare.com/terms/).
+
+---
+
+## Next Steps
+
+1. **[QUICKSTART.md](QUICKSTART.md)** if you're new to WARP
+2. **Install it** with the command above
+3. **Try it**: `warp up` then `warp status`
+4. **Get help**: `warp --help`
+
+Questions? Issues? See [INSTALLATION.md](INSTALLATION.md) for troubleshooting.
