@@ -42,11 +42,18 @@ The official WARP app is designed for people who click menus. If you live in the
 
 ## 30-Second Setup
 
-### 1. Install WARP First
+### 1. Install WARP Daemon
+You need the WARP daemon (the background service). Choose one:
+
+**Option A: Homebrew (recommended for CLI users)**
 ```bash
-# Download from App Store (free)
-https://apps.apple.com/app/cloudflare-warp/id1423210915
+brew install --cask cloudflare-warp
 ```
+
+**Option B: App Store**
+Visit [App Store](https://apps.apple.com/app/cloudflare-warp/id1423210915) and download for free.
+
+*Note: You need the daemon, not the GUI. Either method installs it.*
 
 ### 2. Install warp-cli
 ```bash
