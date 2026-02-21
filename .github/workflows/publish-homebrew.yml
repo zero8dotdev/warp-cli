@@ -47,7 +47,7 @@ jobs:
 
       - name: Update formula
         run: |
-          cat > homebrew-tools/Formula/warp.rb << 'EOF'
+          cat > homebrew-tools/Formula/warp-cli.rb << 'EOF'
           class Warp < Formula
             desc "Beautiful CLI for Cloudflare WARP - Control your VPN from the terminal"
             homepage "https://github.com/zero8dotdev/warp-cli"
@@ -84,15 +84,15 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add Formula/warp.rb
+          git add Formula/warp-cli.rb
           git commit -m "chore: bump warp to ${{ env.VERSION }}"
           git push
 
       - name: Verify formula updated
         run: |
-          if [ -f "homebrew-tools/Formula/warp.rb" ]; then
+          if [ -f "homebrew-tools/Formula/warp-cli.rb" ]; then
             echo "✅ Formula successfully updated in homebrew-tools tap"
-            grep -A2 "url " homebrew-tools/Formula/warp.rb | head -3
+            grep -A2 "url " homebrew-tools/Formula/warp-cli.rb | head -3
           else
             echo "❌ Formula file not found"
             exit 1
