@@ -5,6 +5,7 @@ use std::process;
 mod commands;
 mod format;
 mod warp_cli;
+mod ip;
 
 use commands::*;
 
