@@ -33,6 +33,17 @@ print_step() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
+# Ask for sudo password upfront
+request_sudo() {
+    if [ "$EUID" -ne 0 ]; then
+        echo "This installation requires elevated privileges (sudo)."
+        sudo -v || {
+            echo -e "${RED}✗ Sudo access denied${NC}"
+            exit 1
+        }
+    fi
+}
+
 # Check prerequisites
 check_prerequisites() {
     print_step "1" "Checking Prerequisites"
@@ -227,6 +238,9 @@ main() {
     print_banner
 
     trap 'on_error ${LINENO}' ERR
+
+    # Request sudo upfront so password is cached
+    request_sudo
 
     check_prerequisites
     clone_repo
