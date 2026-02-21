@@ -208,14 +208,82 @@ We translate simple commands into warp-cli calls, add pretty colors, and handle 
 
 ## 💎 Key Features
 
-✅ **12 simple commands** - easy to remember and use
-✅ **Colored output** - green for success, red for errors
-✅ **JSON mode** - `--json` flag for scripting
-✅ **Quiet mode** - minimal output for automation
-✅ **Split tunnel** - manage excluded domains/IPs easily
-✅ **Connection stats** - 40+ metrics about your connection
-✅ **Zero dependencies** - single static binary
-✅ **Works offline** - no internet needed after installation
+✅ **12 simple commands**
+   Easy to remember and use - no need to memorize obscure flags
+
+✅ **Colored output**
+   Green for success, red for errors, yellow for warnings
+
+✅ **JSON mode**
+   `--json` flag for scripting and automation pipelines
+
+✅ **Quiet mode**
+   Minimal output for automation and CI/CD integration
+
+✅ **Split tunnel**
+   Manage excluded domains/IPs easily with intuitive commands
+
+✅ **Connection stats**
+   40+ metrics about your connection quality and performance
+
+✅ **Zero dependencies**
+   Single static Rust binary, no external dependencies
+
+✅ **Works offline**
+   No internet needed after installation, purely local operation
+
+---
+
+## 📚 What We Learned
+
+This project demonstrates several key concepts in systems programming and Rust:
+
+### **1. Reverse Engineering the WARP Architecture**
+- Discovered that Cloudflare WARP runs as a daemon (`CloudflareWARP` binary)
+- Found IPC communication via Unix domain socket at `/var/run/warp_service`
+- Identified that `warp-cli` uses gRPC protocol to communicate with daemon
+- Located all critical binaries inside the `.app` bundle structure
+- Understood launchd daemon configuration and lifecycle
+
+### **2. Extracting and Repackaging Binaries**
+- Learned to extract binaries from macOS `.app` bundles
+- Understood how launchd configuration (plist) works
+- Discovered how to safely extract and install system binaries
+- Implemented smart detection to check system state before installation
+
+### **3. Building a CLI Wrapper in Rust**
+- Used `clap` crate for powerful argument parsing with derive macros
+- Implemented subcommand hierarchy and global flags
+- Built output formatting with `colored` crate
+- Handled errors gracefully with `anyhow`
+- JSON serialization with `serde_json`
+
+### **4. System Integration on macOS**
+- Understood macOS launchd daemon management
+- Worked with plist file formats and launchctl
+- Handled sudo elevation and permissions
+- Learned about Unix domain socket communication
+- Discovered log file locations and system diagnostics
+
+### **5. UX/CLI Design Principles**
+- Simplified command interface (8 words vs 20+ flags)
+- Consistent command naming patterns
+- Progressive disclosure (help text for each command)
+- Appropriate error messaging
+- Output formatting for human readability
+
+### **6. Smart Installation Automation**
+- Created detection scripts to check system readiness
+- Implemented multi-step installation with proper sequencing
+- Built non-interactive installation for curl | bash execution
+- Added verification at each step
+- Handled both interactive and non-interactive modes
+
+### **7. Go-to-Market Thinking**
+- Documentation as a key product differentiator
+- Multiple entry points for different user types (5-min quickstart vs detailed docs)
+- Clear value proposition compared to alternatives
+- Transparent about limitations and project status
 
 ---
 
