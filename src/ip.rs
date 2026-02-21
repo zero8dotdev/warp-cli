@@ -6,7 +6,7 @@ pub fn get_public_ip() -> Result<String> {
     match get_ip_from_ipify() {
         Ok(ip) => Ok(ip),
         Err(_) => {
-            // Fallback to ifconfig.me
+            // Fallback to icanhazip.com
             get_ip_from_ifconfig()
         }
     }
@@ -29,11 +29,11 @@ fn get_ip_from_ipify() -> Result<String> {
     Ok(ip)
 }
 
-/// Get IP from ifconfig.me as fallback
+/// Get IP from icanhazip.com as fallback
 fn get_ip_from_ifconfig() -> Result<String> {
     let client = reqwest::blocking::Client::new();
     let response = client
-        .get("https://ifconfig.me")
+        .get("https://icanhazip.com")
         .timeout(std::time::Duration::from_secs(5))
         .send()?;
 
