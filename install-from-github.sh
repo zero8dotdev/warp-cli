@@ -52,30 +52,74 @@ check_prerequisites() {
     if [ ! -d "/Applications/Cloudflare WARP.app" ]; then
         echo -e "${YELLOW}⚠ Cloudflare WARP app not found${NC}"
         echo ""
-        echo "You need to install Cloudflare WARP first:"
-        echo "  https://apps.apple.com/app/cloudflare-warp/id1423210915"
+        echo "We need to install Cloudflare WARP first."
         echo ""
-        echo "Would you like to open the App Store now? (y/n)"
+        echo "Choose installation method:"
+        echo "  1) Homebrew (recommended, fastest)"
+        echo "  2) App Store"
+        echo "  3) Cancel"
+        echo ""
 
         if [ -t 0 ]; then
-            read -p "  " -n 1 -r
+            read -p "Enter choice (1-3): " -n 1 -r
             echo
-            if [[ $REPLY =~ ^[Yy]$ ]]; then
+
+            if [[ $REPLY == "1" ]]; then
+                echo "Installing via Homebrew..."
+                echo ""
+
+                # Check if Homebrew is installed
+                if ! command -v brew &> /dev/null; then
+                    echo -e "${RED}✗ Homebrew not found${NC}"
+                    echo ""
+                    echo "Install Homebrew first:"
+                    echo "  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+                    echo ""
+                    exit 1
+                fi
+
+                # Install cloudflare-warp via Homebrew
+                echo "Installing cloudflare-warp..."
+                brew install --cask cloudflare-warp
+
+                if [ -d "/Applications/Cloudflare WARP.app" ]; then
+                    echo ""
+                    echo -e "${GREEN}✓ Cloudflare WARP installed successfully!${NC}"
+                    echo ""
+                else
+                    echo -e "${RED}✗ Installation failed${NC}"
+                    exit 1
+                fi
+            elif [[ $REPLY == "2" ]]; then
                 echo "Opening App Store..."
                 open "macappstore://apps.apple.com/app/cloudflare-warp/id1423210915"
                 echo ""
                 echo "After installing Cloudflare WARP, run this command again:"
                 echo "  curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash"
                 exit 0
+            else
+                echo "Installation cancelled"
+                exit 0
+            fi
+        else
+            # Non-interactive mode: try Homebrew first, then App Store link
+            if command -v brew &> /dev/null; then
+                echo "Installing via Homebrew..."
+                brew install --cask cloudflare-warp 2>/dev/null || true
+            fi
+
+            if [ ! -d "/Applications/Cloudflare WARP.app" ]; then
+                echo -e "${RED}✗ Cloudflare WARP not found${NC}"
+                echo ""
+                echo "Please install Cloudflare WARP from one of these options:"
+                echo "  1. Homebrew: brew install --cask cloudflare-warp"
+                echo "  2. App Store: https://apps.apple.com/app/cloudflare-warp/id1423210915"
+                echo ""
+                echo "Then run this command again:"
+                echo "  curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash"
+                exit 1
             fi
         fi
-
-        echo "Please install Cloudflare WARP from:"
-        echo "  https://apps.apple.com/app/cloudflare-warp/id1423210915"
-        echo ""
-        echo "Then run this command again:"
-        echo "  curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash"
-        exit 0
     fi
     echo "✓ Cloudflare WARP app found"
 
