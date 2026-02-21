@@ -118,6 +118,7 @@ curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-f
 **Want technical details?**
 - [DETAILS.md](DETAILS.md) - How it works under the hood
 - [INSTALLATION.md](INSTALLATION.md) - Troubleshooting & install methods
+- [FRESH_INSTALL.md](FRESH_INSTALL.md) - Clean uninstall & fresh install guide
 - [PROJECT_STORY.md](PROJECT_STORY.md) - Why this was built
 
 **Building AI agents?**
