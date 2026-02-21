@@ -1,0 +1,83 @@
+name: Publish to Homebrew
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-homebrew:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout warp-cli
+        uses: actions/checkout@v4
+        with:
+          repository: zero8dotdev/warp-cli
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Download release tarball
+        run: |
+          RELEASE_URL="https://github.com/zero8dotdev/warp-cli/archive/refs/tags/${{ github.event.release.tag_name }}.tar.gz"
+          curl -L "$RELEASE_URL" -o warp.tar.gz
+          SHA256=$(shasum -a 256 warp.tar.gz | cut -d' ' -f1)
+          echo "SHA256=$SHA256" >> $GITHUB_ENV
+
+      - name: Checkout homebrew-warp
+        uses: actions/checkout@v4
+        with:
+          repository: zero8dotdev/homebrew-warp
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: homebrew-warp
+
+      - name: Update formula
+        run: |
+          cat > homebrew-warp/Formula/warp.rb << 'EOF'
+          class Warp < Formula
+            desc "Beautiful CLI for Cloudflare WARP - Control your VPN from the terminal"
+            homepage "https://github.com/zero8dotdev/warp-cli"
+            url "https://github.com/zero8dotdev/warp-cli/archive/refs/tags/${{ github.event.release.tag_name }}.tar.gz"
+            sha256 "${{ env.SHA256 }}"
+            license "MIT"
+            head "https://github.com/zero8dotdev/warp-cli.git", branch: "main"
+
+            depends_on "rust" => :build
+
+            def install
+              system "cargo", "build", "--release"
+              bin.install "target/release/warp"
+            end
+
+            def caveats
+              <<~EOS
+                Cloudflare WARP app must be installed first:
+                  brew install --cask cloudflare-warp
+
+                Or download from: https://apps.apple.com/app/cloudflare-warp/id1423210915
+              EOS
+            end
+
+            test do
+              assert_match "warp", shell_output("#{bin}/warp --version")
+              assert_match "Commands:", shell_output("#{bin}/warp --help")
+            end
+          end
+          EOF
+
+      - name: Commit and push
+        working-directory: homebrew-warp
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add Formula/warp.rb
+          git commit -m "chore: bump warp to ${{ github.event.release.tag_name }}"
+          git push
+
+      - name: Comment on release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Published to Homebrew!\n\nInstall with:\n```\nbrew tap zero8dotdev/warp\nbrew install warp\n```'
+            })
