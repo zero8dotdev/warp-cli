@@ -17,9 +17,8 @@ WARP_APP_PATH="/Applications/Cloudflare WARP.app"
 RESOURCES_PATH="$WARP_APP_PATH/Contents/Resources"
 INSTALL_PATH="/usr/local/bin"
 
-# Source detection script to check current state
+# Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/detect-installation.sh" json > /dev/null 2>&1 || true
 
 print_header() {
     echo ""
