@@ -120,6 +120,12 @@ curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-f
 - [INSTALLATION.md](INSTALLATION.md) - Troubleshooting & install methods
 - [PROJECT_STORY.md](PROJECT_STORY.md) - Why this was built
 
+**Building AI agents?**
+- [AGENTIC_DEVELOPMENT.md](AGENTIC_DEVELOPMENT.md) - WARP for agent development, testing, deployment
+  - Geographic testing, rate limit protection, secure communication
+  - Implementation patterns with code examples
+  - Multi-agent systems and CI/CD integration
+
 **Want real-world examples?**
 - [USAGE_EXAMPLES.md](USAGE_EXAMPLES.md) - 100+ command examples for scripts & automation
 
