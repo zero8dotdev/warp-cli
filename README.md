@@ -77,7 +77,7 @@ $ warp settings
 #### Option 1: Homebrew (Easiest)
 
 ```bash
-brew tap zero8dotdev/warp
+brew tap zero8dotdev/tools
 brew install warp
 ```
 
@@ -319,7 +319,7 @@ This project demonstrates several key concepts in systems programming and Rust:
 
 ### Method 1: Homebrew (Recommended)
 ```bash
-brew tap zero8dotdev/warp
+brew tap zero8dotdev/tools
 brew install warp
 ```
 

@@ -9,25 +9,25 @@ When you create a GitHub release with a version tag (e.g., `v1.0.0`), a GitHub A
 1. Downloads the release tarball
 2. Calculates the SHA256 hash
 3. Updates the Homebrew formula
-4. Commits to the `homebrew-warp` repository
+4. Commits to the `homebrew-tools` repository
 5. Users can then install with `brew install warp`
 
 ## Setup Steps
 
-### Step 1: Create `homebrew-warp` Repository
+### Step 1: Create `homebrew-tools` Repository
 
-Create a new GitHub repository named `homebrew-warp`:
+Create a new GitHub repository named `homebrew-tools`:
 
 ```bash
-github.com/zero8dotdev/homebrew-warp
+github.com/zero8dotdev/homebrew-tools
 ```
 
 ### Step 2: Set Up Repository Structure
 
-In `homebrew-warp`, create this structure:
+In `homebrew-tools`, create this structure:
 
 ```
-homebrew-warp/
+homebrew-tools/
 ├── Formula/
 │   └── warp.rb          # Homebrew formula (see warp.rb in main repo)
 ├── README.md
@@ -42,7 +42,7 @@ homebrew-warp/
 - `warp.rb` - Homebrew formula template
 - `.github/workflows/publish-homebrew.yml` - Auto-publish workflow
 
-**In homebrew-warp repository:**
+**In homebrew-tools repository:**
 - Copy the files to their respective locations
 - Create `README.md` with installation instructions
 
@@ -79,8 +79,8 @@ Then on GitHub:
 
 GitHub Actions will automatically:
 - Calculate SHA256
-- Update `homebrew-warp/Formula/warp.rb`
-- Commit and push to `homebrew-warp`
+- Update `homebrew-tools/Formula/warp.rb`
+- Commit and push to `homebrew-tools`
 - Comment on the release with installation instructions
 
 ### Step 7: Users Can Install
@@ -88,7 +88,7 @@ GitHub Actions will automatically:
 After the workflow completes, users can install with:
 
 ```bash
-brew tap zero8dotdev/warp
+brew tap zero8dotdev/tools
 brew install warp
 ```
 
@@ -113,7 +113,7 @@ brew upgrade warp
                     ↓
 5. Updates Formula/warp.rb with new version & SHA256
                     ↓
-6. Commits to homebrew-warp repo
+6. Commits to homebrew-tools repo
                     ↓
 7. Users can install: brew tap zero8dotdev/warp && brew install warp
 ```
@@ -144,15 +144,15 @@ The workflow will automatically handle:
 
 Check `.github/workflows/publish-homebrew.yml` logs:
 - Is token valid?
-- Does homebrew-warp repo exist?
+- Does homebrew-tools repo exist?
 - Is token permissions correct?
 
 ### Manual Update
 
-If automated workflow fails, manually update `homebrew-warp`:
+If automated workflow fails, manually update `homebrew-tools`:
 
 ```bash
-# In homebrew-warp repository
+# In homebrew-tools repository
 git checkout Formula/warp.rb
 # Update url to new version
 # Update sha256 with output of: shasum -a 256 warp-v0.2.0.tar.gz
@@ -184,7 +184,7 @@ brew install warp  # No tap needed!
 
 ### Installation Command (for users)
 ```bash
-brew tap zero8dotdev/warp
+brew tap zero8dotdev/tools
 brew install warp
 ```
 
@@ -203,8 +203,8 @@ git push origin v1.0.0
 ## Next Steps
 
 1. ✅ Files are ready in this repository
-2. Create `homebrew-warp` repository on GitHub
-3. Copy files to `homebrew-warp`
+2. Create `homebrew-tools` repository on GitHub
+3. Copy files to `homebrew-tools`
 4. Set up `HOMEBREW_TAP_TOKEN` secret
 5. Create first release
 6. Test installation with `brew tap zero8dotdev/warp && brew install warp`
