@@ -400,6 +400,92 @@ homebrew-warp repository (formula)
 Users: brew install warp
 ```
 
+## 🤔 Why This CLI?
+
+The standard Cloudflare WARP package is a GUI-first application designed for non-technical users. It lives in your menu bar and is always trying to be helpful with notifications and status updates.
+
+**However**, if you live in the terminal and use WARP for development (accessing internal networks, testing with different geolocations, etc.), the GUI is overkill:
+
+```bash
+# Without our CLI - juggling mouse and terminal, forgetting obscure commands:
+$ warp-cli tunnel host add example.com
+$ warp-cli tunnel host list
+$ warp-cli settings list
+$ warp-cli connect
+
+# With our CLI - simple, memorable commands:
+$ warp exclude add example.com
+$ warp exclude list
+$ warp settings
+$ warp up
+```
+
+This CLI gives you **full WARP power** from your terminal without the GUI friction.
+
+---
+
+## ❌ Why not just use the Cloudflare WARP app?
+
+The WARP GUI app works great for some use cases, but has significant downsides for developers:
+
+### The Problem with the GUI App
+
+| Issue | Impact |
+|-------|--------|
+| **Always-on menu bar** | Takes up screen real estate, constant presence |
+| **High battery/CPU usage** | GUI constantly refreshes status, drains battery |
+| **No CLI integration** | Can't script it, can't use in automation pipelines |
+| **No JSON output** | Hard to parse status in scripts |
+| **Verbose underlying CLI** | The `warp-cli` binary exists but is confusing |
+| **Designed for non-developers** | Settings buried in menus, no power-user features |
+
+### Our CLI Advantage
+
+```bash
+# Check connection in scripts - impossible with GUI
+if warp status --json | jq -e '.connected' > /dev/null; then
+  echo "Connected"
+fi
+
+# Manage split tunnel without opening GUI
+warp exclude add internal.corp.com
+warp exclude list
+
+# Automate in CI/CD pipelines
+warp up --quiet && run_tests && warp down
+```
+
+---
+
+## ✅ Do I Miss Anything?
+
+**Short answer: No, you don't.**
+
+The WARP daemon (`CloudflareWARP`) still does all the heavy lifting. Our CLI is just a friendlier control interface:
+
+### How It Actually Works
+
+1. **The daemon is still there** - `CloudflareWARP` runs as root via launchd (system startup)
+2. **All WARP features work** - DNS-over-HTTPS, VPN tunneling, split tunnel, everything
+3. **Our CLI just controls it** - We send commands via gRPC to the daemon
+4. **Cloudflare still pushes updates** - The official WARP app (if installed) updates the daemon, or you can update via Homebrew
+5. **You get the best of both** - Daemon handles VPN features, our CLI provides a dev-friendly interface
+
+### What You Get
+
+✅ Full WARP connectivity (same as the GUI app)
+✅ All split tunnel features
+✅ All connection statistics
+✅ All DNS/gateway settings
+✅ No menu bar bloat
+✅ Terminal-first workflow
+✅ Scriptable interface
+✅ JSON output for automation
+
+So keep the daemon running (launchd handles it automatically), ignore the GUI app, and use our CLI for everything. You lose nothing and gain everything.
+
+---
+
 ## ❓ FAQ
 
 **Q: Why not just use the WARP GUI?**
