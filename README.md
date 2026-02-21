@@ -20,7 +20,9 @@ Cloudflare WARP is a free VPN service that:
 - **Blocks malware & trackers** - Cloudflare's network filters out bad stuff
 - **Makes browsing faster** - Cloudflare optimizes your connection
 
-[Learn more about WARP →](https://www.cloudflare.com/warp/)
+**This CLI works with WARP (the free consumer version).** For enterprise/teams? See [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/).
+
+[Learn more about WARP →](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/)
 
 ---
 
@@ -88,7 +90,7 @@ See all commands: `warp --help`
 
 **New to WARP?**
 - [QUICKSTART.md](QUICKSTART.md) - Get running in 5 minutes
-- [What is WARP & Why Use It?](https://www.cloudflare.com/warp/)
+- [Official WARP Documentation](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/)
 
 **Want technical details?**
 - [DETAILS.md](DETAILS.md) - How it works under the hood
@@ -119,6 +121,9 @@ A: Not yet. It's macOS-only because WARP daemon integration is macOS-specific.
 
 **Q: Do I pay anything?**
 A: No, WARP is free (with optional paid plans for advanced features).
+
+**Q: Is this for enterprise/teams?**
+A: No, this CLI is for personal/consumer WARP. For enterprise use, see [Cloudflare One](https://developers.cloudflare.com/cloudflare-one/team-and-resources/devices/warp/).
 
 **Q: How much data do I use?**
 A: WARP doesn't count against your ISP's data cap—you're encrypting existing traffic, not adding to it.
