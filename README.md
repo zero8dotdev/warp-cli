@@ -151,6 +151,9 @@ A: No, this CLI is for personal/consumer WARP. For enterprise use, see [Cloudfla
 **Q: How much data do I use?**
 A: WARP doesn't count against your ISP's data cap—you're encrypting existing traffic, not adding to it.
 
+**Q: Does closing my terminal stop the VPN?**
+A: No. The WARP daemon is a system service that runs independently. The CLI just sends commands to it. Close your terminal—your VPN stays connected until you run `warp down`.
+
 **Q: Can I script this?**
 A: Yes! Use `warp status --json` to get structured output for scripts.
 
