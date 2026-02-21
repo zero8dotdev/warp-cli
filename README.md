@@ -78,12 +78,12 @@ $ warp settings
 
 ```bash
 brew tap zero8dotdev/tools
-brew install warp
+brew install warp-cli
 ```
 
 Update anytime with:
 ```bash
-brew upgrade warp
+brew upgrade warp-cli
 ```
 
 #### Option 2: One-Line Install
@@ -320,7 +320,7 @@ This project demonstrates several key concepts in systems programming and Rust:
 ### Method 1: Homebrew (Recommended)
 ```bash
 brew tap zero8dotdev/tools
-brew install warp
+brew install warp-cli
 ```
 
 **Advantages:**
@@ -395,9 +395,9 @@ warp-cli repository (main code)
           ↓
 GitHub Actions workflow
           ↓
-homebrew-warp repository (formula)
+homebrew-tools repository (tap)
           ↓
-Users: brew install warp
+Users: brew install warp-cli
 ```
 
 ## 🤔 Why This CLI?
@@ -504,7 +504,7 @@ A: Yes! Use `--json` mode and parse with `jq` for full automation.
 A: Use the one-liner: `curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash`
 
 **Q: How do I update from the one-liner?**
-A: Re-run the same command. Or better yet, switch to Homebrew: `brew tap zero8dotdev/warp && brew install warp`
+A: Re-run the same command. Or better yet, switch to Homebrew: `brew tap zero8dotdev/tools && brew install warp-cli`
 
 ---
 
