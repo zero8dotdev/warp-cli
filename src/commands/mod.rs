@@ -1,0 +1,11 @@
+pub mod connect;
+pub mod status;
+pub mod toggle;
+pub mod logs;
+pub mod mode;
+pub mod stats;
+pub mod settings;
+pub mod exclude;
+pub mod daemon;
+pub mod update;
+pub mod diagnose;
