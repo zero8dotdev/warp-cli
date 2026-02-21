@@ -1,6 +1,8 @@
 use anyhow::Result;
 use serde_json::json;
 use colored::Colorize;
+use std::thread;
+use std::time::Duration;
 use crate::format;
 use crate::warp_cli;
 use crate::ip;
@@ -11,6 +13,9 @@ pub fn run(connect: bool, json: bool, quiet: bool) -> Result<()> {
         let before_ip = ip::get_public_ip().ok();
 
         warp_cli::connect()?;
+
+        // Wait for connection to take effect
+        thread::sleep(Duration::from_millis(5000));
 
         // Get IP after connecting
         let after_ip = ip::get_public_ip().ok();
@@ -41,6 +46,9 @@ pub fn run(connect: bool, json: bool, quiet: bool) -> Result<()> {
         let before_ip = ip::get_public_ip().ok();
 
         warp_cli::disconnect()?;
+
+        // Wait for disconnection to take effect
+        thread::sleep(Duration::from_millis(5000));
 
         // Get IP after disconnecting
         let after_ip = ip::get_public_ip().ok();
