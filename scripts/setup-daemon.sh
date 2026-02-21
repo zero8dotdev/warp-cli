@@ -54,10 +54,19 @@ check_existing_daemon() {
             echo "    Status: Not running"
         fi
 
-        # Offer to reload
-        read -p "  Reload daemon configuration? (y/n) " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # Auto-reload daemon configuration in non-interactive mode
+        # Check if running in terminal (interactive mode)
+        if [ -t 0 ]; then
+            read -p "  Reload daemon configuration? (y/n) " -n 1 -r
+            echo
+            RELOAD_DAEMON=false
+            [[ $REPLY =~ ^[Yy]$ ]] && RELOAD_DAEMON=true
+        else
+            # Non-interactive mode: auto-reload
+            RELOAD_DAEMON=true
+        fi
+
+        if [[ $RELOAD_DAEMON == true ]]; then
             echo "  → Reloading daemon..."
             sudo launchctl unload "$DAEMON_PLIST" 2>/dev/null || true
             sleep 1
