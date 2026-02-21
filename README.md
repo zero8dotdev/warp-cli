@@ -72,10 +72,38 @@ $ warp settings
 
 ## 🚀 Quick Start
 
-### One-Line Install
+### Installation Options
+
+#### Option 1: Homebrew (Easiest)
+
+```bash
+brew tap zero8dotdev/warp
+brew install warp
+```
+
+Update anytime with:
+```bash
+brew upgrade warp
+```
+
+#### Option 2: One-Line Install
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash
+```
+
+The script will:
+- Auto-detect if Cloudflare WARP is installed
+- Offer to install via Homebrew if needed
+- Build and install the CLI
+- Verify everything works
+
+#### Option 3: Clone and Build
+
+```bash
+git clone https://github.com/zero8dotdev/warp-cli.git
+cd warp-cli
+./install-complete.sh
 ```
 
 ### Then Use Immediately
@@ -287,21 +315,44 @@ This project demonstrates several key concepts in systems programming and Rust:
 
 ---
 
-## 🔄 Install Methods
+## 🔄 Installation Methods
 
-### Method 1: One-Liner (Recommended)
+### Method 1: Homebrew (Recommended)
+```bash
+brew tap zero8dotdev/warp
+brew install warp
+```
+
+**Advantages:**
+- ✅ One-command installation
+- ✅ Easy updates with `brew upgrade`
+- ✅ System-wide integration
+- ✅ No need for Xcode or Rust
+
+**Updates:**
+```bash
+brew upgrade warp
+```
+
+### Method 2: One-Liner (No Homebrew)
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash
 ```
 
-### Method 2: Clone & Install
+Automatically:
+- Detects if WARP is installed
+- Offers Homebrew or App Store installation
+- Builds from source
+- Sets everything up
+
+### Method 3: Clone & Install
 ```bash
 git clone https://github.com/zero8dotdev/warp-cli.git
 cd warp-cli
 ./install-complete.sh
 ```
 
-### Method 3: Manual
+### Method 4: Manual Build
 ```bash
 git clone https://github.com/zero8dotdev/warp-cli.git
 cd warp-cli
@@ -310,6 +361,44 @@ sudo install -m 755 target/release/warp /usr/local/bin/warp
 ```
 
 ---
+
+## 📦 Homebrew Publishing
+
+This project uses automated Homebrew publishing. Here's how it works:
+
+### Release Process
+
+When we create a new release (e.g., `v0.2.0`):
+
+1. **Tag Release**: `git tag v0.2.0`
+2. **Create Release**: Push tag and create release on GitHub
+3. **Automation Happens**:
+   - GitHub Actions triggers automatically
+   - Downloads release tarball
+   - Calculates SHA256 hash
+   - Updates formula in `homebrew-warp` tap
+   - Formula gets committed automatically
+4. **Users Update**: `brew upgrade warp`
+
+### For Maintainers
+
+See [HOMEBREW_SETUP.md](HOMEBREW_SETUP.md) for:
+- How to set up the Homebrew tap
+- GitHub Actions workflow details
+- Personal access token setup
+- Creating your first release
+
+### Architecture
+
+```
+warp-cli repository (main code)
+          ↓
+GitHub Actions workflow
+          ↓
+homebrew-warp repository (formula)
+          ↓
+Users: brew install warp
+```
 
 ## ❓ FAQ
 
@@ -324,6 +413,12 @@ A: Yes, it's a universal Rust binary that works on both.
 
 **Q: Can I script this?**
 A: Yes! Use `--json` mode and parse with `jq` for full automation.
+
+**Q: How do I install without Homebrew?**
+A: Use the one-liner: `curl -fsSL https://raw.githubusercontent.com/zero8dotdev/warp-cli/main/install-from-github.sh | bash`
+
+**Q: How do I update from the one-liner?**
+A: Re-run the same command. Or better yet, switch to Homebrew: `brew tap zero8dotdev/warp && brew install warp`
 
 ---
 
