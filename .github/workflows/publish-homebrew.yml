@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: zero8dotdev/homebrew-warp
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: homebrew-warp
 
       - name: Update formula
